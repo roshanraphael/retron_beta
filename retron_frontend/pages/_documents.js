@@ -1,7 +1,8 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
+import { useEffect } from 'react';
 import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
-
+import AOS from 'aos'
 class MyDocument extends Document {
   
 //   setGoogleTags() {
@@ -18,7 +19,11 @@ class MyDocument extends Document {
 //   }
 
   render() {
-    
+    useEffect(() => {
+      AOS.init({
+        duration:1000
+      })
+    },[])
     return (
       <Html lang="en">
         <Head>

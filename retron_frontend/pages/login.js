@@ -74,16 +74,16 @@ const Login = () => {
                     />
                 </div>
 
-                <div className=" row d-flex justify-content-center">
-                    <div className="col-12 p-2 d-flex justify-content-center">
-                    <button className="btn btn-primary btn-block">Log In</button>
+                <div className="p-4 row d-flex justify-content-center">
+                    <div className="col pt-3 d-flex justify-content-center">
+                    <button className="btn btn-dark btn-block p-5" style={{borderRadius:"20%"}}>Log In</button>
                     </div>
-                    <div className="d-flex justify-content-center align-item-center">
-                    <h5>OR</h5>
+                    <div className="col d-flex justify-content-center align-item-center">
+                    <h5 className="p-5">OR</h5>
                     </div>
-                    <div className="col-12 pb-5 d-flex justify-content-center">
+                    <div className="col pt-3 d-flex justify-content-center">
                         <Link href="/register">
-                    <button className="btn btn-block btn-primary ">Create an Account</button></Link>
+                    <button className="btn btn-block btn-dark p-3" style={{borderRadius:"20%"}}>Create an Account</button></Link>
                     </div>
                 </div>
             </form>
@@ -97,9 +97,9 @@ const Login = () => {
                     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous"/>
                 </Head>
                 <div className="container-fluid pt-5">
-                    <div className="container-fluid bg-white" >
-                        <div className="row d-flex justify-content-center align-item-center">
-                            <div className=" col-md">
+                    <div className="container-fluid"style={{backgroundColor:"#0095b6"}} >
+                        <div className="">
+                            <div className="">
                                 {loginForm()}
                             </div>
                         </div>

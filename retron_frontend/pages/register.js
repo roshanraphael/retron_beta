@@ -92,7 +92,7 @@ const Register = () => {
 
                 <div className=" row d-flex justify-content-center">
                     <div className="col-12 p-2 d-flex justify-content-center">
-                    <button className="btn btn-primary btn-block">Register</button>
+                    <button className="btn btn-dark btn-block">Register</button>
                     </div>
                 </div>
             </form>
@@ -105,9 +105,9 @@ const Register = () => {
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" 
                     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous"/>
                 </Head>
-                <div className="container-fluid pt-5 pb-5 bg-warning" style={{height:"650px"}}>
+                <div className="container-fluid pt-5 pb-5 bg-dark" style={{height:"650px"}}>
                     <div className="">
-                    <div className="container bg-white p-5" style={{borderBottomLeftRadius: 40, borderBottomRightRadius:40, borderTopRightRadius: 40, borderTopLeftRadius: 40}} >
+                    <div className="container p-5" style={{ backgroundColor:"#0095b6", borderBottomLeftRadius: 40, borderBottomRightRadius:40, borderTopRightRadius: 40, borderTopLeftRadius: 40}} >
                         <div className="row d-flex justify-content-center align-item-center">
                             <div className=" col-md">
                                 {registerForm()}

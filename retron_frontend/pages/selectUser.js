@@ -45,7 +45,7 @@ const SelectUser = () => {
             return (
                 <li key={i} className="list-unstyled">
                     <input onChange={handleToggle(user._id)} type="checkbox" className="mr-2" />
-                    <label className="form-check-label">{user.name}</label>
+                    <label className="form-check-label text-primary">{user.name}</label>
                 </li>
             );
         });
@@ -77,7 +77,10 @@ const SelectUser = () => {
             body: JSON.stringify(room)
         })
         .then(response => {
-            Router.push(`/chatrooms`)
+            // Router.push(`/chatrooms`)
+            setRoomName('')
+            setChecked([])
+            window.location.reload()
             return console.log(response.json());
         })
         .catch(err => console.log(err));
@@ -102,12 +105,6 @@ const SelectUser = () => {
     return(
         <Layout>
             <div>
-                <h1>
-                    SelectUser
-                </h1>
-                <Link href="/chatUi">
-                    <a>go back</a>
-                </Link>
                 <div className="container-fluid">
                     {showAllUsers()}
                     {form()}
