@@ -47,7 +47,7 @@ const ChatUi = () => {
     const showAdded = () => {
         return rooms.map((room, i) => {
             return (
-                <div key={i} className=" row" data-aos="fade-up" data-aos-delay="50">
+                <div key={i} className=" row">
                     <div className="col-10">
                         <Link href={`/chatrooms/${room._id}`}>
                         <a><h3>{room.roomName}</h3></a>
@@ -72,10 +72,11 @@ const ChatUi = () => {
     };
     return(
         <Layout>
-            <div className="container-fluid h-100 bg-dark">
+            <div className="container-fluid h-100 bg-white">
                 <div className="row">
-                    <div className="col-md-4 bg-dark" data-aos="fade-left" data-aos-delay="1000">
-                        <h1 className="text-white">Chat Ui</h1>
+                    <div className="col-md-4 bg-white" data-aos="fade-right" data-aos-duration="2000"
+                    style={{borderRight:"6px solid skyblue", height: "1000vh"}}>
+                        <h1 className="text-dark">Chat Ui</h1>
                         {/* <Link href="/selectUser">
                             <a>Select Users for New Chat Room</a>
                         </Link> */}
@@ -83,17 +84,14 @@ const ChatUi = () => {
                         {showHost()}
                     </div>
 
-                    <div className="col-md-8">
+                    <div className="col-md-8" data-aos="fade-up" data-aos-duration="1500">
                     <div className="d-flex justify-content-center align-item-center">
                             <a onClick={toggle} style={{ marginBottom: '1rem', cursor: 'pointer' }}className="text-primary"><h3>Create Room</h3></a>
-                            <hr className="p-1 bg-primary rounded-pill" />
+                            {/* <hr className="p-1 bg-primary rounded-pill" /> */}
                         </div>
-                    <Collapse isOpen={isOpen}>
+                    <Collapse isOpen={!isOpen}>
                             <div className="container">
                                 <SelectUser/>
-                                <div align="end" className="p-2">
-                                    <a onClick={toggle} style={{ marginBottom: '1rem', cursor: 'pointer' }}className="text-danger btn btn-outline-danger">Close</a>
-                                </div>
                             </div>
                         </Collapse>
                     </div>

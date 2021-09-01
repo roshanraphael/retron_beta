@@ -106,9 +106,9 @@ const SelectUser = () => {
         <Layout>
             <div>
                 <div className="container-fluid">
-                    {showAllUsers()}
                     {form()}
-                    <div>
+                    {showAllUsers()}
+                    <div className="pt-4">
                         <button className="btn btn-primary" onClick={() => roomCreate(checked, roomName)}>
                             Create Room
                         </button>

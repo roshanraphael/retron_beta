@@ -1,3 +1,4 @@
+import { Html, Head } from 'next/document';
 import React, { useEffect, useState } from 'react'
 import Layout from '../../components/Layout'
 import { singleChatRoom, isAuth } from '../../actions/auth'
@@ -81,20 +82,22 @@ const singleChat = ({room, query}) => {
     return(
         <Layout>
             <div>
-                <h1>Single Chat Room</h1>
-                <div className="row">
-                    <div className="col-sm-4">
-                        <h1>Room Name: {room.roomName}</h1>
-                        <h1>User Host: {room.userHost.name}</h1>
-                        <h1>User:</h1>
+                <div className="row container">
+                    <div className="col-sm-4 sticky-top" style={{borderRight:"6px solid skyblue", height: "100vh"}} data-aos="fade-right" data-aos-duration="1500">
+                        <h3> {room.roomName}</h3>
+                        <h3>Room Host: {room.userHost.name}</h3>
+                        <h3>Users:</h3>
                         {showAdded()}
+                        <div className=''>
+                        <div className="">{messagesInput()}
+                        <button className="btn btn-primary" onClick={() => sendMessage({id : room._id})}>
+                            Send
+                        </button>
+                        </div>
+                        </div>
                     </div>
-                    <div className="col-sm-8">
-                        <h1>Chat Screen</h1>
-                        <div>{messagesInput()}</div>
-                <button className="btn btn-primary" onClick={() => sendMessage({id : room._id})}>
-                    Send
-                </button>
+                    <div className="col-sm-8" data-aos="fade-up" data-aos-duration="1500">
+                        <h3>Chat Screen</h3>
                         {displayMess()}
                     </div>
                 </div>

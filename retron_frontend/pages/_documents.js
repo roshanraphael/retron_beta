@@ -5,18 +5,18 @@ const { publicRuntimeConfig } = getConfig();
 import AOS from 'aos'
 class MyDocument extends Document {
   
-//   setGoogleTags() {
-//     if (publicRuntimeConfig.PRODUCTION) {
-//       return {
-//         __html: `
-//           window.dataLayer = window.dataLayer || [];
-//           function gtag(){dataLayer.push(arguments);}
-//           gtag('js', new Date());
-//           gtag('config', 'UA-147955896-1');
-//         `
-//       };
-//     }
-//   }
+  setGoogleTags() {
+    if (publicRuntimeConfig.PRODUCTION) {
+      return {
+        __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'UA-147955896-1');
+        `
+      };
+    }
+  }
 
   render() {
     useEffect(() => {
@@ -30,7 +30,7 @@ class MyDocument extends Document {
           <meta charSet="UTF-8" />
           <meta
               name="description"
-              content="This is my Portfolio site with Blogs."
+              content="Chat App"
             />
           {/* <meta name="viewport" content="width=device-width, initial-scale=1.0" /> */}
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" 
@@ -47,12 +47,13 @@ class MyDocument extends Document {
             <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"></link>
           <link rel="stylesheet" href="/static/css/styles.css" />
           <React.Fragment>
+            <script dangerouslySetInnerHTML={this.setGoogleTags()} />
           </React.Fragment>
         </Head>
         <body>
+                
           <Main />
           <NextScript />
-          
         </body>
       </Html>
     );
