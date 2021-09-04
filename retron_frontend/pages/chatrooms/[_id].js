@@ -1,8 +1,11 @@
 import { Html, Head } from 'next/document';
 import React, { useEffect, useState } from 'react'
+import Link from 'next/link';
+import { getRooms, getHostRooms } from '../../actions/auth'
 import Layout from '../../components/Layout'
 import { singleChatRoom, isAuth } from '../../actions/auth'
 import axios from 'axios';
+import AOS from 'aos'
 // import Router from 'next/router'
 
 const singleChat = ({room, query}) => {
@@ -15,14 +18,76 @@ const singleChat = ({room, query}) => {
         setMess(room.message)
         getRefresh()
     },[])
-  
+    const [isOpen, setIsOpen] = useState(false);
+    const toggle = () => setIsOpen(!isOpen);
+    useEffect(() => {
+        AOS.init({
+            duration: 1000
+        });
+    },[])
+
+    console.log(isAuth())
+    const [rooms, setRooms] = useState([]);
+    const [hostRooms, setHostRooms] = useState([]);
+
+    useEffect(() => {
+        loadRooms();
+        loadHostRooms()
+    }, []);
+    
+    const loadRooms = () => {
+    getRooms(isAuth()._id).then(data => {
+            if (data.error) {
+                console.log(data.error);
+            } else {
+                console.log(data)
+                setRooms(data);
+            }
+        });
+    };
+    const loadHostRooms = () => {
+        getHostRooms(isAuth()._id).then(data => {
+                if (data.error) {
+                    console.log(data.error);
+                } else {
+                    console.log(data)
+                    setHostRooms(data);
+                }
+            });
+        };
+    const showAdded = () => {
+        return rooms.map((room, i) => {
+            return (
+                <div key={i} className=" row">
+                    <div className="col-10">
+                        <Link href={`/chatrooms/${room._id}`}>
+                        <a><h3>{room.roomName}</h3></a>
+                        </Link>
+                    </div>
+                </div>
+            );
+        });
+    };
+    const showHost = () => {
+        return hostRooms.map((room, i) => {
+            return (
+                <div key={i} className=" row">
+                    <div className="col-10">
+                        <Link href={`/chatrooms/${room._id}`}>
+                        <a><h3>{room.roomName}</h3></a>
+                        </Link>
+                    </div>
+                </div>
+            );
+        });
+    };
     const getRefresh = () => {
         setInterval(() => {
         window.location.reload()
         }, 20000);
     }
 
-    const showAdded = () => {
+    const showAddedMem = () => {
         return members.map((memb, i) => {
             return (
                 <div key={i} className=" row">
@@ -83,11 +148,24 @@ const singleChat = ({room, query}) => {
         <Layout>
             <div>
                 <div className="row container">
-                    <div className="col-sm-4 sticky-top" style={{borderRight:"6px solid skyblue", height: "100vh"}} data-aos="fade-right" data-aos-duration="1500">
+                        <div className="col-md-3 bg-white"
+                    data-aos="fade-right" data-aos-duration="2000">
+                        <h1 className="text-dark">Chat Rooms</h1>
+                        {/* <Link href="/selectUser">
+                            <a>Select Users for New Chat Room</a>
+                        </Link> */}
+                        {showAdded()}
+                        {showHost()}
+                        </div>
+                    <div className="col-sm-6" data-aos="fade-up" data-aos-duration="1500">
+                        <h3>Chat Screen</h3>
+                        {displayMess()}
+                    </div>
+                    <div className="col-sm-3 sticky-top" style={{borderLeft:"6px solid skyblue", height: "100vh"}} data-aos="fade-right" data-aos-duration="1500">
                         <h3> {room.roomName}</h3>
                         <h3>Room Host: {room.userHost.name}</h3>
                         <h3>Users:</h3>
-                        {showAdded()}
+                        {showAddedMem()}
                         <div className=''>
                         <div className="">{messagesInput()}
                         <button className="btn btn-primary" onClick={() => sendMessage({id : room._id})}>
@@ -95,10 +173,6 @@ const singleChat = ({room, query}) => {
                         </button>
                         </div>
                         </div>
-                    </div>
-                    <div className="col-sm-8" data-aos="fade-up" data-aos-duration="1500">
-                        <h3>Chat Screen</h3>
-                        {displayMess()}
                     </div>
                 </div>
             </div>

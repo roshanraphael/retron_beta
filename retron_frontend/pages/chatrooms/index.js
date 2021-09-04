@@ -4,6 +4,7 @@ import { Collapse } from 'reactstrap';
 import { getRooms, getHostRooms, isAuth } from '../../actions/auth'
 import Layout from '../../components/Layout'
 import SelectUser from '../selectUser'
+import singleChat from './[_id]';
 import AOS from 'aos'
 
 const ChatUi = () => {
@@ -74,22 +75,28 @@ const ChatUi = () => {
         <Layout>
             <div className="container-fluid h-100 bg-white">
                 <div className="row">
-                    <div className="col-md-4 bg-white" data-aos="fade-right" data-aos-duration="2000"
-                    style={{borderRight:"6px solid skyblue", height: "1000vh"}}>
-                        <h1 className="text-dark">Chat Ui</h1>
+                    <div className="col-md-2">
+                        <div className="col-md-3 bg-white"
+                    data-aos="fade-right" data-aos-duration="2000">
+                        <h1 className="text-dark">Chat Rooms</h1>
                         {/* <Link href="/selectUser">
                             <a>Select Users for New Chat Room</a>
                         </Link> */}
                         {showAdded()}
                         {showHost()}
+                        </div>
+                        
+                    </div>
+                    <div className="col-md-6 bg-white d-flex justify-content-center align-item-center" 
+                    data-aos="fade-right" data-aos-duration="2000">
                     </div>
 
-                    <div className="col-md-8" data-aos="fade-up" data-aos-duration="1500">
+                    <div className="col-md-3" data-aos="fade-up" data-aos-duration="1500">
                     <div className="d-flex justify-content-center align-item-center">
                             <a onClick={toggle} style={{ marginBottom: '1rem', cursor: 'pointer' }}className="text-primary"><h3>Create Room</h3></a>
                             {/* <hr className="p-1 bg-primary rounded-pill" /> */}
                         </div>
-                    <Collapse isOpen={!isOpen}>
+                    <Collapse isOpen={isOpen}>
                             <div className="container">
                                 <SelectUser/>
                             </div>
