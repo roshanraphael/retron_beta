@@ -15,8 +15,6 @@ const ChatUi = () => {
             duration: 1000
         });
     },[])
-
-    console.log(isAuth())
     const [rooms, setRooms] = useState([]);
     const [hostRooms, setHostRooms] = useState([]);
 
@@ -75,28 +73,17 @@ const ChatUi = () => {
         <Layout>
             <div className="container-fluid h-100 bg-white">
                 <div className="row">
-                    <div className="col-md-2">
-                        <div className="col-md-3 bg-white"
+                    <div className="col-md-4" style={{borderRight:"6px solid skyblue", height: "100vh"}}
                     data-aos="fade-right" data-aos-duration="2000">
                         <h1 className="text-dark">Chat Rooms</h1>
-                        {/* <Link href="/selectUser">
-                            <a>Select Users for New Chat Room</a>
-                        </Link> */}
                         {showAdded()}
-                        {showHost()}
-                        </div>
-                        
+                        {showHost()}               
                     </div>
-                    <div className="col-md-6 bg-white d-flex justify-content-center align-item-center" 
-                    data-aos="fade-right" data-aos-duration="2000">
-                    </div>
-
-                    <div className="col-md-3" data-aos="fade-up" data-aos-duration="1500">
+                    <div className="col-md-8" data-aos="fade-up" data-aos-duration="1500">
                     <div className="d-flex justify-content-center align-item-center">
                             <a onClick={toggle} style={{ marginBottom: '1rem', cursor: 'pointer' }}className="text-primary"><h3>Create Room</h3></a>
-                            {/* <hr className="p-1 bg-primary rounded-pill" /> */}
                         </div>
-                    <Collapse isOpen={isOpen}>
+                    <Collapse isOpen={!isOpen}>
                             <div className="container">
                                 <SelectUser/>
                             </div>
