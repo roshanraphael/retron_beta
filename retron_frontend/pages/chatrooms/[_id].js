@@ -52,7 +52,7 @@ const singleChat = ({room, query}) => {
     const getRefresh = () => {
         setInterval(() => {
         window.location.reload()
-        }, 20000);
+        }, 50000);
     }
 
     const showAddedMem = () => {

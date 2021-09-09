@@ -1,6 +1,18 @@
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema;
 
+const googleResults = {
+    title: {
+        type: String
+    },
+    link: {
+        type: String
+    },
+    snippet:{
+        type: String
+    }
+}
+
 const messageBody = {
     messageSender: {
         type: String, required: true
@@ -8,6 +20,9 @@ const messageBody = {
     mess: {
         type: String,
         required: true,
+    },
+    gresults: {
+        type: [googleResults]
     }
 }
 
