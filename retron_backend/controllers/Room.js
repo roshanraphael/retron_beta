@@ -1,53 +1,52 @@
 const ChatRoom = require('../models/chatRoom')
 const google = require('google-it');
-const handlingGoogle = require('../handlers/google/googleHandler')
 exports.registerNewRoom = (req, res) => {
-    console.log("body",req.body)
-        const { roomName, userHost, userAdded} = req.body
-        // let userAdded = userAdded
-        if (!userHost || !userHost.length) {
+    console.log("body", req.body)
+    const { roomName, userHost, userAdded } = req.body
+    // let userAdded = userAdded
+    if (!userHost || !userHost.length) {
+        return res.status(400).json({
+            error: 'userHost is required'
+        });
+    }
+
+    if (!userAdded || userAdded.length === 0) {
+        return res.status(400).json({
+            error: 'At least one Member is required'
+        });
+    }
+
+    let newRoom = new ChatRoom()
+    newRoom.roomName = roomName
+    newRoom.userHost = userHost
+    let arrayOfMembers = userAdded
+    console.log('Array', arrayOfMembers)
+
+    newRoom.save((err, chatRoom) => {
+        if (err) {
             return res.status(400).json({
-                error: 'userHost is required'
-            });
+                error: err
+            })
         }
-
-        if (!userAdded || userAdded.length === 0) {
-            return res.status(400).json({
-                error: 'At least one Member is required'
-            });
-        }
-
-        let newRoom = new ChatRoom()
-        newRoom.roomName = roomName
-        newRoom.userHost = userHost
-        let arrayOfMembers = userAdded
-        console.log('Array', arrayOfMembers)
-
-        newRoom.save((err, chatRoom) => {
-            if(err){                
-                return res.status(400).json({
-                    error: err
-                })
+        ChatRoom.findByIdAndUpdate(chatRoom._id, { $push: { userAdded: arrayOfMembers } }, { new: true }).exec(
+            (err, chatRoom) => {
+                if (err) {
+                    return res.status(400).json({
+                        error: err
+                    })
+                } else {
+                    res.json(chatRoom)
+                }
             }
-            ChatRoom.findByIdAndUpdate(chatRoom._id, {$push: {userAdded: arrayOfMembers}}, {new: true}).exec(
-                (err, chatRoom) => {
-                    if(err) {
-                        return res.status(400).json({
-                            error: err
-                        })
-                    } else {
-                        res.json(chatRoom)
-                    }
-                }    
-            )
-        })
+        )
+    })
 
 }
 
 exports.getRooms = (req, res) => {
     console.log(req.params.id)
-    ChatRoom.find({userAdded: req.params.id})
-    .sort({ createdAt: -1 })
+    ChatRoom.find({ userAdded: req.params.id })
+        .sort({ createdAt: -1 })
         .exec((err, data) => {
             if (err) {
                 console.log(err)
@@ -61,8 +60,8 @@ exports.getRooms = (req, res) => {
 };
 exports.getHostRooms = (req, res) => {
     console.log(req.params.id)
-    ChatRoom.find({userHost: req.params.id})
-    .sort({ createdAt: -1 })
+    ChatRoom.find({ userHost: req.params.id })
+        .sort({ createdAt: -1 })
         .exec((err, data) => {
             if (err) {
                 console.log(err)
@@ -76,7 +75,7 @@ exports.getHostRooms = (req, res) => {
 };
 exports.getSingleRoom = (req, res) => {
     const id = req.params.id;
-    ChatRoom.findById( id )
+    ChatRoom.findById(id)
         // .select("-photo")
         .populate('userHost', '_id name')
         .populate('userAdded', '_id name')
@@ -86,50 +85,132 @@ exports.getSingleRoom = (req, res) => {
                     error: err
                 });
             }
-            res.json(data);
+            res.send(data);
         });
 };
 
 exports.chatAdded = (req, res) => {
     console.log(req.body.userId)
-    ChatRoom.find({userAdded: req.body.userId}).sort({ createdAt: -1 })
-      .exec((err, room) => {
-        if (err) {
-            return res.json({
-                error: err
-            });
-        }
-        // console.log(room)
-        res.json(room);
-    });
+    ChatRoom.find({ userAdded: req.body.userId }).sort({ createdAt: -1 })
+        .exec((err, room) => {
+            if (err) {
+                return res.json({
+                    error: err
+                });
+            }
+            // console.log(room)
+            res.json(room);
+        });
 }
 
+const botResponse = async (msg) => {
+    let res = '';
+    if (msg.startsWith('!google ')) {
+        const googleSearch = msg.slice(8)
+        // console.log(googleSearch)
+        if (googleSearch == undefined || googleSearch == ' ') {
+            return null
+        }
+        const gRes = await google({ 'query': googleSearch }).then(results => {
+            // console.log("Res: ", results);
+            let vars = `Result for : ${googleSearch}`
+            for (let i = 0; i < 1; i++) {
+                vars += `Title : ${results[i].title}\n\nDescription : ${results[i].snippet}\n\nLink : ${results[i].link}\n\n`
+            }
+            // console.log("Vars: ", vars)
+            return vars;
+        });
+        return gRes;
+    }
+    return res;
+};
+
 exports.pushMessage = (req, res) => {
-    console.log("PUSH MESSAGE CONTROLLER",req.body)
-    let mess1 = req.body.message.mess
-    ChatRoom.findByIdAndUpdate(req.params.id, {
-        $push: {message: req.body.message}
-    }, (err, message) => {
-        if (err) {
-            console.log(err)
-        } else {
-            if(mess1.startsWith('!google ')) {
-                const googleSearch = mess1.slice(8)
-                console.log(googleSearch)
-                if(googleSearch == undefined || googleSearch == ' '){
-                    return null
-                }
-                google({ 'query': googleSearch}).then(results => {
-                    console.log(results)
-                    // let vars = `_*Result for : ${googleSearch}*_\n`
-                    // for (let i = 0; i < 1; i++) {
-                    //     vars +=  `\n\n\n*Title* : ${results[i].title}\n\n*Description* : ${results[i].snippet}\n\n*Link* : ${results[i].link}\n\n`
-                    // }
-                    console.log("GET TYPE OF",typeof results)
+    console.log("PUSH MESSAGE CONTROLLER", req.body)
+    let mess1 = req.body.message.mess;
+    const tmp = req.body.message;
+    botResponse(mess1).then(reply => {
+        const fullMessage = { ...tmp, ...{ botResult: reply}};
+        console.log("bot res", fullMessage);
+        ChatRoom.findByIdAndUpdate(req.params.id, {
+            $push: { message: fullMessage }
+        }, (err, message) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send({
+                    message: "SUCCESS"
                 })
             }
-            res.send({message: "message Updated"})
-            console.log('message updated successfully !')
+        });
+    });
+    
+    // ChatRoom.findByIdAndUpdate(req.params.id, {
+    //     $push: { message: req.body.message }
+    // }, (err, message) => {
+    //     if (err) {
+    //         console.log(err)
+    //     } else {
+    //         if (mess1.startsWith('!google ')) {
+    //             const googleSearch = mess1.slice(8)
+    //             console.log(googleSearch)
+    //             if (googleSearch == undefined || googleSearch == ' ') {
+    //                 return null
+    //             }
+    //             google({ 'query': googleSearch }).then(results => {
+    //                 let vars = `_*Result for : ${googleSearch}*_\n`
+    //                 for (let i = 0; i < 1; i++) {
+    //                     vars += `\n\n\n*Title* : ${results[i].title}\n\n*Description* : ${results[i].snippet}\n\n*Link* : ${results[i].link}\n\n`
+    //                 }
+    //                 res.send(
+    //                     {
+    //                         message: "SUCCESS",
+    //                     }
+    //                 )
+    //                 // for (let i = 0; i < 1; i++) {
+    //                 //     let r = results[i]
+    //                 //     console.log(r)
+    //                 // }
+    //                 // ChatRoom.findByIdAndUpdate(req.params.id, {
+    //                 //     $push: { gresults: vars }
+    //                 // }, (err, success) => {
+    //                 //     if (err) {
+    //                 //         console.log(err)
+    //                 //     } else {
+    //                 //         res.send({
+    //                 //             message: "success"
+    //                 //         })
+    //                 //         console.log("MESSAGE_UPDATED")
+    //                 //     }
+    //                 // })
+    //                 // console.log("GET TYPE OF",typeof results)
+    //             })
+    //         }
+    //     }
+    // })
+}
+
+exports.pushGoogleResults = (req, res) => {
+    let mess1 = req.body.message.mess
+    if (mess1.startsWith('!google ')) {
+        const googleSearch = mess1.slice(8)
+        console.log(googleSearch)
+        if (googleSearch == undefined || googleSearch == ' ') {
+            return null
         }
-    })
+        google({ 'query': googleSearch }).then(results => {
+            console.log(results)
+
+            ChatRoom.findByIdAndUpdate(req.params.id, {
+                $push: { message: req.body.message }
+            }, (err, message) => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    res.send({ message: "message Updated" })
+                    console.log('message updated successfully !')
+                }
+            })
+        })
+    }
 }

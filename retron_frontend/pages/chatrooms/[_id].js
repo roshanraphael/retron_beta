@@ -15,7 +15,6 @@ const singleChat = ({room, query}) => {
     useEffect(() => {
         setMembers(room.userAdded)
         setMess(room.message)
-        getRefresh()
     },[])
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
@@ -49,11 +48,6 @@ const singleChat = ({room, query}) => {
             });
         };
 
-    const getRefresh = () => {
-        setInterval(() => {
-        window.location.reload()
-        }, 50000);
-    }
 
     const showAddedMem = () => {
         return members.map((memb, i) => {
@@ -74,24 +68,26 @@ const singleChat = ({room, query}) => {
                     <div className="col-10 bg-light m-1">
                         <h4>{m.mess}</h4>
                         <p>{m.messageSender}</p>
+                        <p>{m.botResult}</p>
                     </div>
                 </div>
             );
         });
     }
 
-    const sendMessage = ({id}) => {
+    const sendMessage = (event, {id}) => {
+        event.preventDefault();
         let name = isAuth().name
         const message = {
             messageSender : name,
             mess: getMessage
         }
         axios.put(`http://localhost:8000/api/sendmessages/${id}`,{message})
-        .then(response => {
+        .then(response => {                            
             console.log(response)
-            setGetMessages('')
             window.location.reload();
-            return response.json();
+            setGetMessages('')
+            
         })
         .catch(err => console.log(err));
     }
@@ -122,11 +118,11 @@ const singleChat = ({room, query}) => {
                         <h3>Users:</h3>
                         {showAddedMem()}
                         <div className=''>
-                        <div className="">{messagesInput()}
-                        <button className="btn btn-primary" onClick={() => sendMessage({id : room._id})}>
+                        <form className="" onSubmit={(e) => sendMessage(e, {id : room._id})}>{messagesInput()}
+                        <button className="btn btn-primary">
                             Send
                         </button>
-                        </div>
+                        </form>
                         </div>
                     </div>
                     <div className="col-sm-8">

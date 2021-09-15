@@ -2,13 +2,7 @@ const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema;
 
 const googleResults = {
-    title: {
-        type: String
-    },
-    link: {
-        type: String
-    },
-    snippet:{
+    body: {
         type: String
     }
 }
@@ -21,8 +15,8 @@ const messageBody = {
         type: String,
         required: true,
     },
-    gresults: {
-        type: [googleResults]
+    botResult: {
+        type: String
     }
 }
 
@@ -39,6 +33,9 @@ const chatRoomSchema = new mongoose.Schema({
     }],
     message: {
         type: [messageBody]
+    },
+    gresults: {
+        type: [googleResults]
     }
 },
 { timestamp: true }
