@@ -1,5 +1,26 @@
 const ChatRoom = require('../models/chatRoom')
 const google = require('google-it');
+
+const appid = process.env.WRA_APP_ID;
+const WolframAlphaAPI = require('../handlers/wra/WolframAlphaAPI.js');
+let wraAPI = WolframAlphaAPI(appid);
+// const handleShort = (message, text) => {
+// 	try {	
+// 		console.log('Short message');
+// 		// send the rest of the message to Wolfram|Alpha API
+// 		wraAPI.getShort(text)
+// 			.then(res => {
+// 				message.reply(res)
+// 					.catch(err => console.log(err));
+// 			})
+// 			.catch(err => {
+// 				message.reply(String(err));
+// 			});
+// 	} catch (err) {
+// 		console.log(err);
+// 	}
+// };
+
 exports.registerNewRoom = (req, res) => {
     console.log("body", req.body)
     const { roomName, userHost, userAdded } = req.body
@@ -121,6 +142,19 @@ const botResponse = async (msg) => {
             return vars;
         });
         return gRes;
+    } else if (msg.startsWith('!wra ')) {
+        const wraSearch = msg.slice(5);
+        if (wraSearch == undefined || wraSearch == ' ') {
+            return null
+        }
+        const wraRes = await wraAPI.getShort(wraSearch)
+			.then(res => {
+				return res;
+			})
+			.catch(err => {
+				console.log(err);
+			});
+        return wraRes;
     }
     return res;
 };
