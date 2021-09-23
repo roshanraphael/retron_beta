@@ -32,7 +32,7 @@ const Home = () => {
             }}>
           </div>
         </div>
-        <div className="col d-flex justify-content-center align-item-center shadow-lg" style={{ backgroundColor:"#0095b6", borderBottomLeftRadius: 40, borderBottomRightRadius:40, borderTopRightRadius: 40, borderTopLeftRadius: 40}}
+        <div className="col d-flex justify-content-center align-item-center" 
         data-aos="fade-up" data-aos-delay="600">
           <Login />
         </div>

@@ -3,6 +3,7 @@ import Link from "next/link"
 import Router from 'next/router';
 import React, {useState, useEffect} from 'react'
 import { login, authenticate, isAuth } from '../actions/auth';
+import { Paper,  TextField } from '@mui/material';
 import AOS from 'aos'
 const Login = () => {
     
@@ -52,11 +53,18 @@ const Login = () => {
 
     const handleChange = name => e => {
         setValues({ ...values, error: false, [name]: e.target.value });
+
     };
 
     const loginForm = () => {
         return (
             <form onSubmit={handleSubmit} >
+                <TextField
+                    type="email"
+                    value={email}
+                    onChange={handleChange('email')}
+                    label="Enter your email"
+                />
                 <div className="form-group pt-3 pb-3">
                 <input
                         type="email"
@@ -101,13 +109,18 @@ const Login = () => {
             <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"></link>
                 </Head>
                 <div className="container-fluid pt-5">
-                    <div className="container-fluid"style={{backgroundColor:"#0095b6"}} data-aos="fade-up" >
+                    <Paper data-aos="fade-up" elevation={1} sx={{
+                        padding: '1rem'
+                    }}>
+                        {loginForm()}
+                    </Paper>
+                    {/* <div className="container-fluid"style={{backgroundColor:"#0095b6"}} data-aos="fade-up" >
                         <div className="">
                             <div className="">
                                 {loginForm()}
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <br />
             </>
