@@ -20,7 +20,7 @@ const Login = () => {
         AOS.init({
             duration:1200
         })
-        isAuth() && Router.push(`/chatrooms`);
+        isAuth() && Router.push(`/chatrooms`);  
     }, []);
     const { email,  password, error, loading, message, showForm } = values;
 
@@ -59,13 +59,7 @@ const Login = () => {
     const loginForm = () => {
         return (
             <form onSubmit={handleSubmit} >
-                <TextField
-                    type="email"
-                    value={email}
-                    onChange={handleChange('email')}
-                    label="Enter your email"
-                />
-                <div className="form-group pt-3 pb-3">
+                <div className="form-group mb-3">
                 <input
                         type="email"
                         value={email}
@@ -74,8 +68,7 @@ const Login = () => {
                         placeholder="Type your email"
                     />
                 </div>
-
-                <div className="form-group">
+                <div className="form-group mb-3">
                 <input
                         type="password"
                         value={password}
@@ -85,16 +78,18 @@ const Login = () => {
                     />
                 </div>
 
-                <div className="p-4 row d-flex justify-content-center">
-                    <div className="col pt-3 d-flex justify-content-center">
-                    <button className="btn btn-dark btn-block p-5" style={{borderRadius:"20%"}}>LOG IN</button>
+                <div className="row d-flex justify-content-center">
+                    <div className="col d-flex justify-content-center">
+                    <button className="btn btn-dark">Log In</button>
                     </div>
-                    <div className="col d-flex justify-content-center align-item-center">
-                    <h5 className="p-5">OR</h5>
-                    </div>
-                    <div className="col pt-3 d-flex justify-content-center">
+                </div>
+                <div style={{display: "grid", placeItems:"center"}}>
+                    <hr style={{borderTop: "1px dashed", width: "60%", textAlign: "center", maxWidth: "20rem"}} className="row mb-2 mt-2" />
+                </div>
+                <div className="row d-flex justify-content-center">
+                    <div className="col d-flex justify-content-center">
                         <Link href="/register">
-                    <button className="btn btn-block btn-dark p-3" style={{borderRadius:"20%"}}>CREATE AN ACCOUNT</button></Link>
+                    <button className="btn btn-dark">Create an account</button></Link>
                     </div>
                 </div>
             </form>
