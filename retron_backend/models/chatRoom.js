@@ -1,44 +1,51 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 
 const googleResults = {
-    body: {
-        type: String
-    }
-}
+  body: {
+    type: String,
+  },
+};
 
 const messageBody = {
-    messageSender: {
-        type: String, required: true
-    },
-    mess: {
-        type: String,
-        required: true,
-    },
-    botResult: {
-        type: String
-    }
-}
+  messageSender: {
+    type: String,
+    required: true,
+  },
+  mess: {
+    type: String,
+    required: true,
+  },
+  botResult: {
+    type: String,
+  },
+};
 
-const chatRoomSchema = new mongoose.Schema({
+const chatRoomSchema = new mongoose.Schema(
+  {
     roomName: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     userHost: {
-        type: ObjectId, ref: 'User'
+      type: ObjectId,
+      ref: "User",
     },
-    userAdded: [{
-        type: ObjectId, ref: 'User', required: true
-    }],
+    userAdded: [
+      {
+        type: ObjectId,
+        ref: "User",
+        required: true,
+      },
+    ],
     message: {
-        type: [messageBody]
+      type: [messageBody],
     },
     gresults: {
-        type: [googleResults]
-    }
-},
-{ timestamp: true }
+      type: [googleResults],
+    },
+  },
+  { timestamp: true }
 );
 
-module.exports = mongoose.model('chatRoom', chatRoomSchema);
+module.exports = mongoose.model("chatRoom", chatRoomSchema);
