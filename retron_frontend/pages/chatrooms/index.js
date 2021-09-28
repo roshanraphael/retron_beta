@@ -8,8 +8,8 @@ import singleChat from "./[_id]";
 import AOS from "aos";
 
 const ChatUi = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggle = () => setIsOpen(!isOpen);
+  // const [isOpen, setIsOpen] = useState(false);
+  // const toggle = () => setIsOpen(!isOpen);
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -46,16 +46,15 @@ const ChatUi = () => {
   const showAdded = () => {
     return (
       <>
-        <h2 className="text-dark display-6">Added</h2>
         <div className="list-group">
           {rooms.map((room, i) => {
             return (
               <a
-                class="list-group-item list-group-item-action"
-                style={{ cursor: "pointer" }}
+                class="list-group-item list-group-item-action mb-2"
+                style={{ cursor: "pointer", background: "rgba(255, 255, 255, .9)" }}
               >
                 <Link href={`/chatrooms/${room._id}`}>
-                  <h3>{room.roomName}</h3>
+                  <h5>{room.roomName}</h5>
                 </Link>
               </a>
               // <div key={i} className=" row">
@@ -74,16 +73,15 @@ const ChatUi = () => {
   const showHost = () => {
     return (
       <>
-        <h2 className="text-dark display-6">Created</h2>
         <div className="list-group">
           {hostRooms.map((room, i) => {
             return (
               <a
-                class="list-group-item list-group-item-action"
-                style={{ cursor: "pointer" }}
+                class="list-group-item list-group-item-action mb-2"
+                style={{ cursor: "pointer", background: "rgba(255, 255, 255, .9)" }}
               >
                 <Link href={`/chatrooms/${room._id}`}>
-                  <h3>{room.roomName}</h3>
+                  <h5>{room.roomName}</h5>
                 </Link>
               </a>
               // <div key={i} className=" row">
@@ -112,33 +110,30 @@ const ChatUi = () => {
   };
   return (
     <Layout>
+      
       <div className="container-fluid h-100 bg-white">
         <div className="row">
           <div
             className="col-md-4"
-            style={{ borderRight: "6px solid skyblue", height: "100vh" }}
+            style={{ borderRight: "6px solid skyblue", height: "100vh",  backgroundColor: "#00acac", paddingTop: "1rem"}}
             data-aos="fade-right"
             data-aos-duration="2000"
           >
-            <h1 className="text-dark display-3">Chat Rooms</h1>
+            <h3 className="text-dark text-center mb-4" style={{fontFamily: "Roboto, sans-serif"}}><b>Chat Rooms</b></h3>
             {showAdded()}
             {showHost()}
           </div>
           <div className="col-md-8" data-aos="fade-up" data-aos-duration="1500">
             <div className="d-flex justify-content-center align-item-center">
-              <a
-                onClick={toggle}
-                style={{ marginBottom: "1rem", cursor: "pointer" }}
-                className="text-primary"
-              >
+             
                 <h3>Create Room</h3>
-              </a>
+            
             </div>
-            <Collapse isOpen={!isOpen}>
+          
               <div className="container">
                 <SelectUser />
               </div>
-            </Collapse>
+      
           </div>
         </div>
       </div>

@@ -20,29 +20,32 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    console.table({ name, email, password, error, loading, message, showForm });
-    setValues({ ...values, loading: true, error: false });
-    const user = { name, username, email, password };
-
-    register(user).then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error, loading: false });
-      } else {
-        setValues({
-          ...values,
-          name: "",
-          username: "",
-          email: "",
-          password: "",
-          error: "",
-          loading: false,
-          message: data.message,
-          showForm: false,
-        });
-        Router.push(`/`);
-      }
-    });
+    if (email === '' || password === '' || name === '' || username === '') { 
+    setValues({ ...values, loading: false, error: 'Fill Credentials' });
+    } else {
+      console.table({ name, email, password, error, loading, message, showForm });
+      setValues({ ...values, loading: true, error: false });
+      const user = { name, username, email, password };
+  
+      register(user).then((data) => {
+        if (data.error) {
+          setValues({ ...values, error: data.error, loading: false });
+        } else {
+          setValues({
+            ...values,
+            name: "",
+            username: "",
+            email: "",
+            password: "",
+            error: "",
+            loading: false,
+            message: data.message,
+            showForm: false,
+          });
+          Router.push(`/`);
+        }
+      });
+    }
   };
 
   const handleChange = (name) => (e) => {
@@ -107,25 +110,37 @@ const Register = () => {
           integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
           crossorigin="anonymous"
         />
+        <link
+          href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+          rel="stylesheet"
+        ></link>
       </Head>
-      <div
-        className="container-fluid pt-5 pb-5 bg-white"
+      <div 
+          data-aos="fade-up"
+          className="container-fluid pt-5 pb-5 bg-white"
         style={{ height: "650px" }}
       >
         <div className="">
+         
           <div
             className="container p-5"
             style={{
-              backgroundColor: "#0095b6",
+              backgroundColor: "#00acac",
               borderBottomLeftRadius: 40,
               borderBottomRightRadius: 40,
               borderTopRightRadius: 40,
               borderTopLeftRadius: 40,
             }}
           >
+             <h4 className="text-center" style={{fontFamily: "Roboto, sans-serif", fontSize: "2rem"}}>
+         Create an account
+          </h4>
             <div className="row d-flex justify-content-center align-item-center">
               <div className=" col-md">{registerForm()}</div>
             </div>
+          <div className="text-danger">
+            {error ? <div className=" p-2 d-flex justify-content-center">{error}</div> : null}
+          </div>
           </div>
         </div>
       </div>

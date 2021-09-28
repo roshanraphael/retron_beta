@@ -40,7 +40,7 @@ const Home = () => {
               style={{
                 backgroundImage:
                   "url(" +
-                  "https://github.com/roshanraphael/retron_beta/blob/master/retron_frontend/assects/logo.png?raw=true" +
+                  "https://github.com/roshanraphael/retron_beta/blob/master/retron_frontend/assets/logo.png?raw=true" +
                   ")",
                 backgroundSize: "contain",
                 backgroundRepeat: "no-repeat",

@@ -39,7 +39,7 @@ const singleChat = ({ room, query }) => {
         <div key={i} className=" row">
           <div className="col-12">
             <a>
-              <h3>{memb.name}</h3>
+              <h6>{memb.name}</h6>
             </a>
           </div>
         </div>
@@ -50,11 +50,16 @@ const singleChat = ({ room, query }) => {
   const displayMess = () => {
     return messa.map((m, i) => {
       return (
-        <div key={i} className=" row">
-          <div className="col-10 bg-light m-1">
-            <h4>{m.mess}</h4>
-            <p>{m.botResult}</p>
-            <p>{m.messageSender}</p>
+        <div key={i} className="row">
+          <div className="col-10 bg-light m-1 mr-0">
+            <h6>{m.messageSender}</h6>
+            <h5>{m.mess}</h5>
+            {(m.botResult !== '') ? (
+              <div style={{
+                background: "rgba(0,0,0,.2)",
+                padding: "1rem"
+              }}>{m.botResult}</div>) : ''
+            }
           </div>
         </div>
       );
@@ -72,11 +77,11 @@ const singleChat = ({ room, query }) => {
         mess: getMessage,
       };
       socket.current.emit("new_message", { message, roomId: id });
+      setGetMessages('')
       // axios.put(`http://localhost:8000/api/sendmessages/${id}`,{message})
       // .then(response => {
       //     console.log(response)
       //     window.location.reload();
-      //     setGetMessages('')
 
       // })
       // .catch(err => console.log(err));
@@ -104,27 +109,31 @@ const singleChat = ({ room, query }) => {
 
   return (
     <Layout>
-      <div>
-        <div className="row container">
+      <div className="container-fluid" style={{
+        display: "flex",
+        justifyContent: "space-between"
+      }}>
+        <div className="row" style={{ position: "relative" }}>
           <div
-            className="col-sm-4 sticky-top"
-            style={{ borderRight: "6px solid skyblue", height: "100vh" }}
+            className="col-sm-3 sticky-top"
+            style={{ borderRight: "6px solid skyblue", height: "90vh", top: "55px", background: '#00acac' }}
           >
-            <div className="bg-white" style={{ zIndex: 10 }}>
-              <h3> {room.roomName}</h3>
-              <div className="">
+            <div style={{ zIndex: 10 }} style={{display: "flex",  flexDirection: "column", alignItems: "space-between"}}>
+              <h3 className="d-flex justify-content-center"> {room.roomName}</h3>
+              <div className="d-flex justify-content-center">
                 <a onClick={toggle} style={{ cursor: "pointer" }}>
                   <u>Room Details</u>
                 </a>
               </div>
+              <div className="row">
               <Collapse isOpen={isOpen}>
-                <h3>Room Host: {room.userHost.name}</h3>
-                <h3>Users:</h3>
+                <h6>Room Host: {room.userHost.name}</h6>
+                <h6>Users:</h6>
                 {showAddedMem()}
               </Collapse>
-              <div className="">
-                <form
-                  className=""
+              </div>
+              <div className="row" style={{position: "absolute", bottom: 0}}>
+                <form className =""
                   onSubmit={(e) => sendMessage(e, { id: room._id })}
                 >
                   {messagesInput()}
@@ -133,11 +142,12 @@ const singleChat = ({ room, query }) => {
               </div>
             </div>
           </div>
-          <div className="col-sm-8">
-            <h3 className="sticky-top bg-white">Chat Screen</h3>
+          <div className="col-sm-9">
+            {/* <h3 className="sticky-top p-3"  style={{  top: '60px'}}>Chat Screen</h3> */}
             {displayMess()}
           </div>
         </div>
+        
       </div>
     </Layout>
   );

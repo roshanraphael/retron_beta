@@ -25,28 +25,31 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    console.table({ email, password, error, loading, message, showForm });
-    setValues({ ...values, loading: true, error: false });
-    const user = { email, password };
-
-    login(user).then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error, loading: false });
-      } else {
-        console.log(data);
-        // save user token to cookie
-        // save user info to localstorage
-        // authenticate user
-        authenticate(data, () => {
-          if (isAuth()) {
-            Router.push(`/chatrooms`);
-          } else {
-            Router.push(`/`);
-          }
-        });
-      }
-    });
+    if (email === '' || password === '') {
+      setValues({ ...values, loading: false, error: "Fill Credentials" });
+    } else {
+      // console.table({ email, password, error, loading, message, showForm });
+      setValues({ ...values, loading: true, error: false });
+      const user = { email, password };
+  
+      login(user).then((data) => {
+        if (data.error) {
+          setValues({ ...values, error: data.error, loading: false });
+        } else {
+          console.log(data);
+          // save user token to cookie
+          // save user info to localstorage
+          // authenticate user
+          authenticate(data, () => {
+            if (isAuth()) {
+              Router.push(`/chatrooms`);
+            } else {
+              Router.push(`/`);
+            }
+          });
+        }
+      });
+    }
   };
 
   const handleChange = (name) => (e) => {
@@ -77,10 +80,20 @@ const Login = () => {
 
         <div className="row d-flex justify-content-center">
           <div className="col d-flex justify-content-center">
-            <button className="btn btn-dark">Log In</button>
+            <button className="btn text-white" style={{background: "#00acac"}}>Log In</button>
           </div>
         </div>
-        <div style={{ display: "grid", placeItems: "center" }}>
+        <h5 style={{
+          width: "100%", 
+          textAlign: "center", 
+          borderBottom: "1px solid #000", 
+          lineHeight: "0.1em",
+          margin: "20px 0px"
+        }}><span style={{    background:"#fff", 
+          padding: "0px 8px" 
+      }}>OR </span></h5>
+
+        {/* <div style={{ display: "grid", placeItems: "center" }}>
           <hr
             style={{
               borderTop: "1px dashed",
@@ -90,11 +103,11 @@ const Login = () => {
             }}
             className="row mb-2 mt-2"
           />
-        </div>
+        </div> */}
         <div className="row d-flex justify-content-center">
           <div className="col d-flex justify-content-center">
             <Link href="/register">
-              <button className="btn btn-dark">Create an account</button>
+              <button className="btn text-white" style={{background: "#00acac"}}>Create an account</button>
             </Link>
           </div>
         </div>
@@ -125,6 +138,9 @@ const Login = () => {
           }}
         >
           {loginForm()}
+          <div className="text-danger">
+            {error ? <div className=" p-2 d-flex justify-content-center">{error}</div> : null}
+          </div>
         </Paper>
         {/* <div className="container-fluid"style={{backgroundColor:"#0095b6"}} data-aos="fade-up" >
                         <div className="">

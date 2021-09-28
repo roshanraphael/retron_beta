@@ -43,12 +43,11 @@ const SelectUser = () => {
     return users.map((user, i) => {
       return (
         <li key={i} className="list-unstyled">
-          <input
-            onChange={handleToggle(user._id)}
-            type="checkbox"
-            className="mr-2"
-          />
-          <label className="form-check-label text-primary">{user.name}</label>
+          {isAuth()._id === user._id ? null : 
+          <><input
+              onChange={handleToggle(user._id)}
+              type="checkbox"
+              className="mr-2" /><label className="form-check-label text-primary">{user.name}</label></> }
         </li>
       );
     });
@@ -98,7 +97,7 @@ const SelectUser = () => {
             onChange={(e) => setRoomName(e.target.value)}
             value={roomName}
             className="form-control"
-            placeholder="RoomName"
+            placeholder="Enter Room Name"
           />
         </div>
       </form>
@@ -110,6 +109,7 @@ const SelectUser = () => {
     <div>
       <div className="container-fluid">
         {form()}
+        <h4></h4>
         {showAllUsers()}
         <div className="pt-4">
           <button
