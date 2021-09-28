@@ -51,7 +51,7 @@ const singleChat = ({ room, query }) => {
     return messa.map((m, i) => {
       return (
         <div key={i} className="row">
-          <div className="col-10 bg-light m-1 mr-0">
+          <div className="col-10 bg-light m-1 mr-0 rounded">
             <h6>{m.messageSender}</h6>
             <h5>{m.mess}</h5>
             {(m.botResult !== '') ? (
@@ -92,8 +92,7 @@ const singleChat = ({ room, query }) => {
     return (
       <form>
         <div className="form-group pt-3 pb-3">
-          <input
-            type="text"
+          <textarea
             onChange={(e) => setGetMessages(e.target.value)}
             value={getMessage}
             className="form-control"
@@ -110,8 +109,9 @@ const singleChat = ({ room, query }) => {
   return (
     <Layout>
       <div className="container-fluid" style={{
-        display: "flex",
-        justifyContent: "space-between"
+        // display: "flex",
+        // justifyContent: "space-between",
+        backgroundColor: "#0a3341"
       }}>
         <div className="row" style={{ position: "relative" }}>
           <div
