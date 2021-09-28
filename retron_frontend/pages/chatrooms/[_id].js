@@ -1,54 +1,40 @@
 import { Html, Head } from 'next/document';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Link from 'next/link';
 import { getRooms, getHostRooms } from '../../actions/auth'
 import Layout from '../../components/Layout'
 import { singleChatRoom, isAuth } from '../../actions/auth'
+import { Collapse } from 'reactstrap';
 import axios from 'axios';
+import io from 'socket.io-client'
+
 // import Router from 'next/router'
+const SERVER = "ws://localhost:8900";
 
 const singleChat = ({room, query}) => {
-    console.log(room.message)
+    console.log("OBUIDNPBPB",room.userHost)
     const [ getMessage, setGetMessages ] = useState('')
     const[messa, setMess] = useState([])
     const [members, setMembers] = useState([])
+    const socket = useRef()
     useEffect(() => {
         setMembers(room.userAdded)
         setMess(room.message)
     },[])
+    useEffect(() => {
+        socket.current = io(SERVER);
+        socket.current.on('get_message', data => {
+            console.log("frm scoke", data.message)
+            setMess(data.message);
+        })
+        
+    }, [])
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
     console.log(isAuth())
-    const [rooms, setRooms] = useState([]);
-    const [hostRooms, setHostRooms] = useState([]);
+    const [error, setError] = useState('')
 
-    useEffect(() => {
-        loadRooms();
-        loadHostRooms()
-    }, []);
     
-    const loadRooms = () => {
-    getRooms(isAuth()._id).then(data => {
-            if (data.error) {
-                console.log(data.error);
-            } else {
-                console.log(data)
-                setRooms(data);
-            }
-        });
-    };
-    const loadHostRooms = () => {
-        getHostRooms(isAuth()._id).then(data => {
-                if (data.error) {
-                    console.log(data.error);
-                } else {
-                    console.log(data)
-                    setHostRooms(data);
-                }
-            });
-        };
-
-
     const showAddedMem = () => {
         return members.map((memb, i) => {
             return (
@@ -67,8 +53,8 @@ const singleChat = ({room, query}) => {
                 <div key={i} className=" row">
                     <div className="col-10 bg-light m-1">
                         <h4>{m.mess}</h4>
-                        <p>{m.messageSender}</p>
                         <p>{m.botResult}</p>
+                        <p>{m.messageSender}</p>
                     </div>
                 </div>
             );
@@ -76,20 +62,25 @@ const singleChat = ({room, query}) => {
     }
 
     const sendMessage = (event, {id}) => {
-        event.preventDefault();
-        let name = isAuth().name
-        const message = {
-            messageSender : name,
-            mess: getMessage
+        if (getMessage == "") {
+            setError("Message Required")
+        } else {
+            event.preventDefault();
+            let name = isAuth().name
+            const message = {
+                messageSender : name,
+                mess: getMessage
+            }
+            socket.current.emit('new_message', {message, roomId: id});
+            // axios.put(`http://localhost:8000/api/sendmessages/${id}`,{message})
+            // .then(response => {                            
+            //     console.log(response)
+            //     window.location.reload();
+            //     setGetMessages('')
+                
+            // })
+            // .catch(err => console.log(err));
         }
-        axios.put(`http://localhost:8000/api/sendmessages/${id}`,{message})
-        .then(response => {                            
-            console.log(response)
-            window.location.reload();
-            setGetMessages('')
-            
-        })
-        .catch(err => console.log(err));
     }
 
     const messagesInput = () => {
@@ -104,6 +95,9 @@ const singleChat = ({room, query}) => {
                         placeholder="message"
                     />
                 </div>
+                <div className="text-danger">
+                {error ? <div className="pb-3">{error}</div> : null}
+                </div>
             </form>
         )
     }
@@ -113,10 +107,16 @@ const singleChat = ({room, query}) => {
             <div>
                 <div className="row container">
                     <div className="col-sm-4 sticky-top" style={{borderRight:"6px solid skyblue", height: "100vh"}}>
+                        <div className="bg-white" style={{zIndex: 10}}>
                         <h3> {room.roomName}</h3>
+                        <div className="">
+                            <a onClick={toggle} style={{cursor: 'pointer'}}><u>Room Details</u></a>
+                        </div>
+                    <Collapse isOpen={isOpen}>
                         <h3>Room Host: {room.userHost.name}</h3>
                         <h3>Users:</h3>
                         {showAddedMem()}
+                        </Collapse>
                         <div className=''>
                         <form className="" onSubmit={(e) => sendMessage(e, {id : room._id})}>{messagesInput()}
                         <button className="btn btn-primary">
@@ -124,9 +124,10 @@ const singleChat = ({room, query}) => {
                         </button>
                         </form>
                         </div>
+                        </div>
                     </div>
                     <div className="col-sm-8">
-                        <h3>Chat Screen</h3>
+                        <h3 className="sticky-top bg-white">Chat Screen</h3>
                         {displayMess()}
                     </div>
                 </div>

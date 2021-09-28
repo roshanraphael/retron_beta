@@ -44,20 +44,53 @@ const ChatUi = () => {
             });
         };
     const showAdded = () => {
-        return rooms.map((room, i) => {
+        return (
+            <>
+            <h2 className="text-dark display-6">Added</h2>
+            <div className="list-group">
+            {rooms.map((room, i) => {
             return (
-                <div key={i} className=" row">
-                    <div className="col-10">
-                        <Link href={`/chatrooms/${room._id}`}>
-                        <a><h3>{room.roomName}</h3></a>
-                        </Link>
-                    </div>
-                </div>
+                <a class="list-group-item list-group-item-action" style={{cursor:"pointer"}}>
+                     <Link href={`/chatrooms/${room._id}`}>
+                     <h3>{room.roomName}</h3>
+                     </Link>
+                </a>
+                // <div key={i} className=" row">
+                //     <div className="col-10">
+                //         <Link href={`/chatrooms/${room._id}`}>
+                //         <a><h3>{room.roomName}</h3></a>
+                //         </Link>
+                //     </div>
+                // </div>
             );
-        });
+        })}
+        </div>
+        </>
+        );
     };
     const showHost = () => {
-        return hostRooms.map((room, i) => {
+        return (
+            <>
+            <h2 className="text-dark display-6">Created</h2>
+            <div className="list-group">
+            {hostRooms.map((room, i) => {
+            return (
+                <a class="list-group-item list-group-item-action" style={{cursor:"pointer"}}>
+                     <Link href={`/chatrooms/${room._id}`}>
+                     <h3>{room.roomName}</h3>
+                     </Link>
+                </a>
+                // <div key={i} className=" row">
+                //     <div className="col-10">
+                //         <Link href={`/chatrooms/${room._id}`}>
+                //         <a><h3>{room.roomName}</h3></a>
+                //         </Link>
+                //     </div>
+                // </div>
+            );
+        })}
+        </div>
+            {/*hostRooms.map((room, i) => {
             return (
                 <div key={i} className=" row">
                     <div className="col-10">
@@ -67,7 +100,9 @@ const ChatUi = () => {
                     </div>
                 </div>
             );
-        });
+        })*/}
+        </>
+        )
     };
     return(
         <Layout>
@@ -75,7 +110,7 @@ const ChatUi = () => {
                 <div className="row">
                     <div className="col-md-4" style={{borderRight:"6px solid skyblue", height: "100vh"}}
                     data-aos="fade-right" data-aos-duration="2000">
-                        <h1 className="text-dark">Chat Rooms</h1>
+                        <h1 className="text-dark display-3">Chat Rooms</h1>
                         {showAdded()}
                         {showHost()}               
                     </div>

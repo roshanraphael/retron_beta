@@ -11,7 +11,6 @@ const roomRoutes = require('./routes/room')
 
 // app
 const app = express();
-
 // db
 mongoose
     .connect(process.env.DATABASE_CLOUD, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false })
@@ -37,3 +36,15 @@ const port = process.env.PORT || 8000;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
+// const io = require("socket.io")(8900, {
+//     cors: {
+//         origin: "http://localhost:3000",
+//     },
+// });
+// io.on("connection", socket => {
+//     console.log('user connected')
+//     socket.on('new_message', ({message}) => {
+//         console.log(message);
+//     })
+// })

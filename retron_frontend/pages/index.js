@@ -4,6 +4,8 @@ import Link from "next/link"
 import Image from 'next'
 import Login from './login'
 import AOS from 'aos'
+import io from 'socket.io-client'
+
 const Home = () => {
 
   useEffect(() => {
@@ -11,7 +13,12 @@ const Home = () => {
       duration : 1000
     });
   }, []);
-  
+  useEffect(() => {
+    const socket = io()
+    socket.on('connection', () => {
+      console.log('connected!')
+    })
+  }, []);
   return (
     <>
     <Head>

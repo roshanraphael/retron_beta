@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import Layout from '../components/Layout'
+// import Layout from '../components/Layout'
 import fetch from 'isomorphic-fetch';
 import Router from 'next/router';
 import Link from 'next/dist/client/link'
@@ -103,7 +103,7 @@ const SelectUser = () => {
     }
 
     return(
-        <Layout>
+        // <Layout>
             <div>
                 <div className="container-fluid">
                     {form()}
@@ -115,7 +115,7 @@ const SelectUser = () => {
                     </div>
                 </div>
             </div>
-        </Layout>
+        // </Layout>
     )
 }
 

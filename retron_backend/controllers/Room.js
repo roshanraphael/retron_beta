@@ -1,9 +1,38 @@
 const ChatRoom = require('../models/chatRoom')
 const google = require('google-it');
-
+const io = require("socket.io")(8900, {
+    cors: {
+        origin: "http://localhost:3000",
+    },
+});
 const appid = process.env.WRA_APP_ID;
 const WolframAlphaAPI = require('../handlers/wra/WolframAlphaAPI.js');
 let wraAPI = WolframAlphaAPI(appid);
+
+io.on("connection", socket => {
+    socket.on("new_message", ({message, roomId}) => {
+        console.log("Message:", message);
+        console.log("Room id", roomId);
+        let mess1 = message.mess;
+        const tmp = message;
+        botResponse(mess1).then(reply => {
+            const fullMessage = { ...tmp, ...{ botResult: reply}};
+            console.log("bot res", fullMessage);
+            ChatRoom.findByIdAndUpdate(roomId, {
+                $push: { message: fullMessage },
+            },{new:true}, (err, message) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(message)
+                    io.emit('get_message', message);
+                }
+            });
+        })
+        .catch(err => console.log("bot err:", err));
+    })
+})
+
 // const handleShort = (message, text) => {
 // 	try {	
 // 		console.log('Short message');
@@ -96,6 +125,7 @@ exports.getHostRooms = (req, res) => {
 };
 exports.getSingleRoom = (req, res) => {
     const id = req.params.id;
+    // console.log(io);
     ChatRoom.findById(id)
         // .select("-photo")
         .populate('userHost', '_id name')
@@ -172,6 +202,7 @@ exports.pushMessage = (req, res) => {
             if (err) {
                 console.log(err);
             } else {
+                io.emit('new_message', req.body)
                 res.send({
                     message: "SUCCESS"
                 })

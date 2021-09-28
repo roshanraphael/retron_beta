@@ -119,6 +119,20 @@ export const getUsers = () => {
         .catch(err => console.log(err));
 };
 
+export const signout = next => {
+    removeCookie('token');
+    removeLocalStorage('user');
+    next();
+
+    return fetch(`http://localhost:8000/api/signout`, {
+        method: 'GET'
+    })
+        .then(response => {
+            console.log('signout success');
+        })
+        .catch(err => console.log(err));
+};
+
 // export const pushMessage = (id, {putMessage}) => {
 //     return fetch(`http:/localhost:8000/api/sendmessages/${id}`, {
 //         method: 'PUT',
