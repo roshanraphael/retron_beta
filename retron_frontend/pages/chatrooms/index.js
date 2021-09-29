@@ -111,11 +111,15 @@ const ChatUi = () => {
   return (
     <Layout>
       
-      <div className="container-fluid h-100 bg-white">
+      <div className="container-fluid h-100 bg-white" style={{
+        backgroundColor: "#0a3341"
+      }}>
         <div className="row">
           <div
             className="col-md-4"
-            style={{ borderRight: "6px solid skyblue", height: "100vh",  backgroundColor: "#00acac", paddingTop: "1rem"}}
+            style={{ borderRight: "6px solid skyblue", height: "100vh",  
+            backgroundImage: 'linear-gradient(#00acac, #0a3341 )',
+            paddingTop: "1rem"}}
             data-aos="fade-right"
             data-aos-duration="2000"
           >
@@ -123,15 +127,25 @@ const ChatUi = () => {
             {showAdded()}
             {showHost()}
           </div>
-          <div className="col-md-8" data-aos="fade-up" data-aos-duration="1500">
-            <div className="d-flex justify-content-center align-item-center">
-             
-                <h3>Create Room</h3>
-            
-            </div>
+          <div className="col-md-8" style={{
+        backgroundColor: "#0a3341"
+              }} data-aos="fade-up" data-aos-duration="1500">
           
-              <div className="container">
+              <div className="container p-3">
                 <SelectUser />
+                <div className="pt-4">
+                <div className="container rounded p-3 bg-white">
+                  <div className="d-flex justify-content-center">
+                  <h3>Commands</h3>
+                  </div>
+                  <ul>
+                    <li><h4>!google</h4> <h5 className="text-muted"> Google search is to hunt for text in publicly accessible documents
+                    offered by web servers.</h5></li>
+                    <li><h4>!wra</h4> <h5 className="text-muted">It answers factual quries directly by computing the answer from externally sourced curated data by WolframAlpha.
+                     It encompasses computer algebra, symbolic and numericial computation, visualization, and statistics capabilities.</h5></li>
+                  </ul>
+                </div>
+                </div>
               </div>
       
           </div>

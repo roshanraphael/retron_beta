@@ -107,7 +107,10 @@ const SelectUser = () => {
   return (
     // <Layout>
     <div>
-      <div className="container-fluid">
+      <div className="container-fluid p-3 rounded shadow-lg bg-white">
+            <div className="d-flex justify-content-center align-item-center">
+                <h3>Create Room</h3>
+            </div>
         {form()}
         <h4></h4>
         {showAllUsers()}

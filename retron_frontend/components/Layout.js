@@ -11,16 +11,15 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText
+  NavLink, Button, Modal, ModalHeader, ModalBody, ModalFooter 
 } from 'reactstrap';
 const Layout = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
+
+  const [modal, setModal] = useState(false);
+
+  const toggle1 = () => setModal(!modal);
 
   useEffect(() => {
     AOS.init({
@@ -43,14 +42,31 @@ const Layout = ({ children }) => {
       </Head>
       <Navbar sticky="top" dark expand="md" style={{backgroundColor: "#008989", boxShadow:"0px 2px 1rem rgba(0,0,0,.4)", zIndex: 10000}}>
       <Container fluid={true}>
-        <NavbarBrand href="/">Retron</NavbarBrand>
+        <NavbarBrand><b>RETRON</b></NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
-          {/* <Nav className="ml-auto" navbar>
+          <Nav className="ml-auto" navbar>
             <NavItem>
               <NavLink className="text-white" href="/chatrooms">Chatrooms</NavLink>
             </NavItem>
-          </Nav> */}
+          </Nav>
+              <div>
+              <Button color="#00acac" className="text-white" onClick={toggle1}>Commands</Button>
+              <Modal className="p-5" isOpen={modal} toggle={toggle1} scrollable={true}>
+                <ModalHeader toggle={toggle1}>Commands</ModalHeader>
+                <ModalBody>
+                  <ul>
+                    <li><h4>!google</h4> <h5 className="text-muted"> Google search is to hunt for text in publicly accessible documents
+                    offered by web servers.</h5></li>
+                    <li><h4>!wra</h4> <h5 className="text-muted">It answers factual quries directly by computing the answer from externally sourced curated data by WolframAlpha.
+                     It encompasses computer algebra, symbolic and numericial computation, visualization, and statistics capabilities.</h5></li>
+                  </ul>
+                </ModalBody>
+                {/* <ModalFooter>
+                  <Button color="secondary" onClick={toggle1}>Close</Button>
+                </ModalFooter> */}
+              </Modal>
+            </div>
           <div style={{
             flex: 1
           }}>

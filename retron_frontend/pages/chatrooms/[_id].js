@@ -51,11 +51,11 @@ const singleChat = ({ room, query }) => {
     return messa.map((m, i) => {
       return (
         <div key={i} className="row">
-          <div className="col-10 bg-light m-1 mr-0 rounded">
+          <div className="col-12 bg-light m-1 mr-0 rounded p-3">
             <h6>{m.messageSender}</h6>
             <h5>{m.mess}</h5>
             {(m.botResult !== '') ? (
-              <div style={{
+              <div className="rounded" style={{
                 background: "rgba(0,0,0,.2)",
                 padding: "1rem"
               }}>{m.botResult}</div>) : ''
@@ -115,24 +115,14 @@ const singleChat = ({ room, query }) => {
       }}>
         <div className="row" style={{ position: "relative" }}>
           <div
-            className="col-sm-3 sticky-top"
-            style={{ borderRight: "6px solid skyblue", height: "90vh", top: "55px", background: '#00acac' }}
+            className="col-sm-2 sticky-top"
+            style={{ borderRight: "6px solid skyblue", height: "90vh", top: "55px", backgroundImage: 'linear-gradient(#00acac, #0a3341 )' }}
           >
             <div style={{ zIndex: 10 }} style={{display: "flex",  flexDirection: "column", alignItems: "space-between"}}>
-              <h3 className="d-flex justify-content-center"> {room.roomName}</h3>
-              <div className="d-flex justify-content-center">
-                <a onClick={toggle} style={{ cursor: "pointer" }}>
-                  <u>Room Details</u>
-                </a>
+              <div className="pt-3">
+              <h3 className="text-white rounded p-3"> {room.roomName}</h3>
               </div>
-              <div className="row">
-              <Collapse isOpen={isOpen}>
-                <h6>Room Host: {room.userHost.name}</h6>
-                <h6>Users:</h6>
-                {showAddedMem()}
-              </Collapse>
-              </div>
-              <div className="row" style={{position: "absolute", bottom: 0}}>
+              <div className="" style={{position: "absolute", bottom: 0}}>
                 <form className =""
                   onSubmit={(e) => sendMessage(e, { id: room._id })}
                 >
@@ -142,9 +132,20 @@ const singleChat = ({ room, query }) => {
               </div>
             </div>
           </div>
-          <div className="col-sm-9">
+          <div className="col-sm-10">
             {/* <h3 className="sticky-top p-3"  style={{  top: '60px'}}>Chat Screen</h3> */}
-            {displayMess()}
+            <div className="row">
+              <div className="col-sm-10">
+                {displayMess()}
+              </div>
+              <div className="col-sm-2 pt-5 container">
+              <div className="text-white pt-5 text-center sticky-top">
+                <h6 className="pt-5 text-center">Room Host: {room.userHost.name}</h6>
+                <h6>Users:</h6>
+                {showAddedMem()}
+              </div>
+              </div>
+            </div>
           </div>
         </div>
         
