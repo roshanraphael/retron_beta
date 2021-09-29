@@ -117,13 +117,14 @@ const ChatUi = () => {
         <div className="row">
           <div
             className="col-md-4"
-            style={{ borderRight: "6px solid skyblue", height: "100vh",  
+            style={{ borderRight: "6px solid skyblue", height: "200vh",  
             backgroundImage: 'linear-gradient(#00acac, #0a3341 )',
             paddingTop: "1rem"}}
             data-aos="fade-right"
             data-aos-duration="2000"
           >
             <h3 className="text-dark text-center mb-4" style={{fontFamily: "Roboto, sans-serif"}}><b>Chat Rooms</b></h3>
+            <hr className="p-1" />
             {showAdded()}
             {showHost()}
           </div>
@@ -133,7 +134,7 @@ const ChatUi = () => {
           
               <div className="container p-3">
                 <SelectUser />
-                <div className="pt-4">
+                {/* <div className="pt-4">
                 <div className="container rounded p-3 bg-white">
                   <div className="d-flex justify-content-center">
                   <h3>Commands</h3>
@@ -145,7 +146,7 @@ const ChatUi = () => {
                      It encompasses computer algebra, symbolic and numericial computation, visualization, and statistics capabilities.</h5></li>
                   </ul>
                 </div>
-                </div>
+                </div> */}
               </div>
       
           </div>
