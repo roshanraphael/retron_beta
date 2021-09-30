@@ -140,8 +140,8 @@ const singleChat = ({ room, query }) => {
               </div>
               <div className="col-sm-2 pt-5 container">
               <div className="text-white pt-5 text-center sticky-top">
-                <h6 className="pt-5 text-center">Room Host: {room.userHost.name}</h6>
-                <h6>Users:</h6>
+                <h6 className="pt-5 text-center"><span style={{color:"yellow"}}>Room Host:</span> <br />{room.userHost.name}</h6>
+                <h6 className="pt-1" style={{color:"yellow"}}>Users:</h6>
                 {showAddedMem()}
               </div>
               </div>

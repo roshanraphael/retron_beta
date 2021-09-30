@@ -47,7 +47,7 @@ const SelectUser = () => {
           <><input
               onChange={handleToggle(user._id)}
               type="checkbox"
-              className="mr-2" /><label className="form-check-label text-primary">{user.name}</label></> }
+              className="mr-2" /><label className="form-check-label p-2 text-primary">{user.name}</label></> }
         </li>
       );
     });
@@ -112,7 +112,7 @@ const SelectUser = () => {
                 <h3>Create Room</h3>
             </div>
         {form()}
-        <h4></h4>
+        <h5>Select Users:</h5>
         {showAllUsers()}
         <div className="pt-4">
           <button
